@@ -33,5 +33,11 @@ public class User {
     public HashMap<String, Book> getLibrary(){
         return this.myLibrary;
     }
+    public boolean hasBook(String title){
+        return this.myLibrary.containsKey(title);
+    }
+    public String toString(){
+        return "Username: " + this.username + "\nPassword: " + this.password + "\nBalance: $" + String.format("%.2f", this.balance);
+    }
 
 }

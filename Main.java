@@ -34,19 +34,65 @@ public class Main {
                             int userMenuSelection = userInput.nextInt();
                             userInput.nextLine();
                             switch(userMenuSelection){
+                                //user wants to see book he owns
                                 case 1:
-                                    //shoudl display books
+                                    displayBooks(currentUser);
+                                    System.out.println("What would you like to do?");
+                                    System.out.println("1.Add review to book");
+                                    System.out.println("2.Add Rating to book");
+                                    System.out.println("3.Return to main menu");
                                 break;
+                                //user chooses to go to store
                                 case 2:
-                                    //displays whole store and should allow option to buy book
+                                    boolean runStoreMenu = true;
+                                    while(runStoreMenu){
+                                        //displays whole store and should allow option to buy book
+                                        displayStore(db.getStore(),currentUser);
+                                        System.out.println("Enter the title of the book you would like to see, or 'Exit' to leave store");
+                                        String userTitle = userInput.nextLine();
+                                        //esures user cannot enre
+                                        while(true){
+                                            if(userTitle.equals("Exit")){
+                                                break;
+                                            }else if(!db.getStore().containsKey(userTitle)){
+                                                System.out.println("Title not found, please enter the title or 'Exit' to leave store");
+                                                userTitle = userInput.nextLine();
+                                            }else if(currentUser.getLibrary().containsKey(userTitle)){
+                                                System.out.println("You already own that book, if you would like to view it go to you library");
+                                                System.out.println("Please enter the title not in your library or 'Exit' to leave store");
+                                                userTitle = userInput.nextLine();
+                                            }else{
+                                                break;
+                                            }
+                                        }
+                                        if(!userTitle.equals("Exit")){
+                                            System.out.println(db.getStore().get(userTitle));
+                                            System.out.println("What would you like to do?");
+                                            System.out.println("1.Buy Book");
+                                            System.out.println("2.Return to store menu");
+                                            System.out.println("3.Exit Store");
+                                            int storeSelection = userInput.nextInt();
+                                            userInput.nextLine();
+                                            switch(storeSelection){
+                                                case 1:
+                                                    sellBook(currentUser, db.getStore().get(userTitle), userTitle);
+                                                break;
+                                                case 2:
+                                                    continue;
+                                                case 3:
+                                                    runStoreMenu = false;
+                                                break;
+                                            }
+                                        }else{
+                                            break;
+                                        }
+                                    }
                                 break;
                                 case 3:
-                                    //write a review for a book
+   
+                                    System.out.println(currentUser);
                                 break;
                                 case 4:
-                                    //display user account and maybe edit data
-                                break;
-                                case 5:
                                     signed_in = false;
                                 break;
                                 default:
@@ -72,6 +118,7 @@ public class Main {
                 case 2:
                     createUser(db.getUsers(), userInput);
                     break;
+                //user chooses to exit system
                 case 3:
                     runMM = false;
                     break;
@@ -137,9 +184,39 @@ public class Main {
         System.out.println("Hi " + user.getUsername() + " what would you like to do today?");
         System.out.println("1.View owned books");
         System.out.println("2.Buy books");
-        System.out.println("3.Write review for book");
-        System.out.println("4.View Account");
+        System.out.println("3.View Account");
         System.out.println("4.Sign Out");
         System.out.println("--------------------------------------------------------------");
+    }
+    public static void displayBooks(User user){
+        HashMap<String,Book> lib = user.getLibrary();
+        //value is the book, key is just the title
+        lib.forEach((key, value) -> {
+            System.out.println(value);
+            System.out.println();
+          });
+    }
+    public static void displayStore(HashMap<String,Book> store, User user){
+        System.out.println("------------------------STORE---------------------------------");
+        //value is the book, key is just the title
+        //prints books not owned by user
+        store.forEach((key, value) -> {
+            if(!user.getLibrary().containsKey(key)){
+                System.out.println(value);
+            }
+        });
+        System.out.println("--------------------------------------------------------------");
+    }
+    public static void sellBook(User user, Book book, String title){
+        if(book.getPrice() > user.getBalance()){
+            System.out.println("Error: not enough funds");
+        }else{
+            //add book to users library
+            user.getLibrary().put(title, book);
+            //update users balance
+            double userBalance = user.getBalance();
+            user.setBalance(userBalance - book.getPrice());
+            System.out.println("Thanks for your purchase, returning to store");
+        }
     }
 }

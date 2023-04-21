@@ -28,7 +28,7 @@ public class Book{
         return this.price;
     }
     public String toString(){
-        return "Titiel: " + this.title + "\nAuthor: " + this.author + "\nPrice"  + String.format("%.2f", this.price);
+        return "Titiel: " + this.title + "\nAuthor: " + this.author + "\nPrice: $"  + String.format("%.2f", this.price);
     }
 
 }

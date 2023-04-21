@@ -6,8 +6,6 @@ import java.util.Set;
 import java.io.IOException;
 import java.io.FileWriter;
 
-import java.util.Set;
-
 
 public class Database {
     private HashMap<String, User> users;
@@ -80,6 +78,7 @@ public class Database {
                     library.put(title,store.get(title));
 
                 }
+                users.put(splitCurrentLine[0], new User(splitCurrentLine[0],splitCurrentLine[1],Double.parseDouble(splitCurrentLine[2]),library));
             }
             
         }
