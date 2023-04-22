@@ -5,6 +5,7 @@ public class User {
     String password;
     double balance;
     HashMap<String, Book> myLibrary;
+    
     public User(String username, String password, double balance,HashMap<String,Book> library){
         this.myLibrary = library;
         this.username = username;
@@ -37,7 +38,8 @@ public class User {
         return this.myLibrary.containsKey(title);
     }
     public String toString(){
-        return "Username: " + this.username + "\nPassword: " + this.password + "\nBalance: $" + String.format("%.2f", this.balance);
+        String userStr = "Username: " + this.username + "\nPassword: " + this.password + "\nBalance: $" + String.format("%.2f", this.balance);
+        return userStr;
     }
 
 }
