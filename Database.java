@@ -6,15 +6,14 @@ import java.util.Set;
 import java.io.IOException;
 import java.io.FileWriter;
 
-
 public class Database {
-    private HashMap<String, User> users;
+    private HashMap<String, Customer> customers;
     private HashMap<String,Book> store;
     private static Database ref;
 
     private Database(){
         this.store = populateStore();
-        this.users = populateUsers(store);
+        this.customers = populateCustomers(store);
     }
 
     public static Database getRef(){
@@ -49,50 +48,83 @@ public class Database {
         return store;
     }
 
-    //populates the users
-    private static HashMap<String, User> populateUsers(HashMap<String,Book> store){
-        HashMap<String,User> users = new HashMap<>();
-        String fileName = "users.csv";
-        File usersFile = new File(fileName);
+    //populates the customers
+    private static HashMap<String, Customer> populateCustomers(HashMap<String,Book> store){
+        HashMap<String,Customer> customers = new HashMap<>();
+        String fileName = "customers.csv";
+        File customersFile = new File(fileName);
         Scanner fileReader = null;
         try {
-            fileReader = new Scanner(usersFile);
+            fileReader = new Scanner(customersFile);
         } catch (FileNotFoundException e) {
-            //if no file foun keep running, just that there will be no users
-            //will have to create new users
+            //if no file foun keep running, just that there will be no customers
+            //will have to create new customers
             return new HashMap<>();
         }
         while(fileReader.hasNextLine()){
             String currentLine = fileReader.nextLine();
             String[] splitCurrentLine = currentLine.split(",");
             HashMap<String,Book> library = new HashMap<>();
-            //if value is less then 4 then user does not own any books
+            //if value is less then 4 then customer does not own any books
             if(splitCurrentLine.length < 4){
-                users.put(splitCurrentLine[0], new User(splitCurrentLine[0],splitCurrentLine[1],Double.parseDouble(splitCurrentLine[2]),library));
+                customers.put(splitCurrentLine[0], new Customer(splitCurrentLine[0],splitCurrentLine[1],Double.parseDouble(splitCurrentLine[2]),library));
 
             }else{
                 String[] bookTitles = splitCurrentLine[3].split(":");
-                //build users current library
+                //build customers current library
                 
                 for(String title:bookTitles){
                     library.put(title,store.get(title));
 
                 }
-                users.put(splitCurrentLine[0], new User(splitCurrentLine[0],splitCurrentLine[1],Double.parseDouble(splitCurrentLine[2]),library));
             }
             
         }
-        return users;
+        return customers;
+    }
+    //populates the customers
+    //overleaded to handle different files for tesitng
+    private static HashMap<String, Customer> populateCustomers(HashMap<String,Book> store, String fileName){
+        HashMap<String,Customer> customers = new HashMap<>();
+        File customersFile = new File(fileName);
+        Scanner fileReader = null;
+        try {
+            fileReader = new Scanner(customersFile);
+        } catch (FileNotFoundException e) {
+            //if no file foun keep running, just that there will be no customers
+            //will have to create new customers
+            return new HashMap<>();
+        }
+        while(fileReader.hasNextLine()){
+            String currentLine = fileReader.nextLine();
+            String[] splitCurrentLine = currentLine.split(",");
+            HashMap<String,Book> library = new HashMap<>();
+            //if value is less then 4 then customer does not own any books
+            if(splitCurrentLine.length < 4){
+                customers.put(splitCurrentLine[0], new Customer(splitCurrentLine[0],splitCurrentLine[1],Double.parseDouble(splitCurrentLine[2]),library));
+
+            }else{
+                String[] bookTitles = splitCurrentLine[3].split(":");
+                //build customers current library
+                
+                for(String title:bookTitles){
+                    library.put(title,store.get(title));
+
+                }
+            }
+            
+        }
+        return customers;
     }
 
-    public User getUserRef(String key){
-        return this.users.get(key);
+    public Customer getCustomerRef(String key){
+        return this.customers.get(key);
     }
     public Book getBookRef(String key){
         return this.store.get(key);
     }
-    public HashMap<String, User> getUsers(){
-        return this.users;
+    public HashMap<String, Customer> getCustomers(){
+        return this.customers;
     }
     public HashMap<String, Book> getStore(){
         return this.store;
@@ -102,61 +134,62 @@ public class Database {
         Object[] keys = keySet.toArray();
         for (Object key: keys){
             System.out.println(this.store.get((String)key));
+            System.out.println();
         }
     }
-    public void updateUsersInfo(){
-        Set<String> keySet = this.users.keySet();
+    public void updateCustomersInfo(){
+        Set<String> keySet = this.customers.keySet();
         Object[] keys = keySet.toArray();
         try {
-            String userLine = "";
-            File usersFile = new File("users.csv");
-            if (usersFile.exists()) {
-                FileWriter myWriter = new FileWriter("users.csv");
+            String customerLine = "";
+            File customersFile = new File("customers.csv");
+            if (customersFile.exists()) {
+                FileWriter myWriter = new FileWriter("customers.csv");
                 
                 for (Object key: keys){
-                    //get user
-                    User user = this.users.get((String)key);
-                    //seperate user info by comma
-                    userLine += user.getUsername() + "," + user.getPassword() + "," + user.getBalance() + ",";
-                    HashMap<String,Book> userLib = user.getLibrary();
+                    //get customer
+                    Customer customer = this.customers.get((String)key);
+                    //seperate customer info by comma
+                    customerLine += customer.getUsername() + "," + customer.getPassword() + "," + customer.getBalance() + ",";
+                    HashMap<String,Book> customerLib = customer.getLibrary();
                     //titles are the keys in library and store
-                    Set<String> bookKeySet = userLib.keySet();
+                    Set<String> bookKeySet = customerLib.keySet();
                     Object[] libKeys = bookKeySet.toArray();
                     //add book titles separated by :
                     for(int i = 0;i < libKeys.length;i++){
                         if(i < libKeys.length - 1){
-                            userLine += (String)libKeys[i] + ":";
+                            customerLine += (String)libKeys[i] + ":";
                         }else{
-                            userLine += (String)libKeys[i] + "\n";
+                            customerLine += (String)libKeys[i] + "\n";
                         }
                     }
                     //add formatted line to file
-                    myWriter.write(userLine);
+                    myWriter.write(customerLine);
                 }
                 myWriter.close();
             } else {
-                usersFile.createNewFile();
-                FileWriter myWriter = new FileWriter("users.csv");
+                customersFile.createNewFile();
+                FileWriter myWriter = new FileWriter("customers.csv");
                 
                 for (Object key: keys){
-                    //get user
-                    User user = this.users.get((String)key);
-                    //seperate user info by comma
-                    userLine += user.getUsername() + "," + user.getPassword() + "," + user.getBalance() + ",";
-                    HashMap<String,Book> userLib = user.getLibrary();
+                    //get customer
+                    Customer customer = this.customers.get((String)key);
+                    //seperate customer info by comma
+                    customerLine += customer.getUsername() + "," + customer.getPassword() + "," + customer.getBalance() + ",";
+                    HashMap<String,Book> customerLib = customer.getLibrary();
                     //titles are the keys in library and store
-                    Set<String> bookKeySet = userLib.keySet();
+                    Set<String> bookKeySet = customerLib.keySet();
                     Object[] libKeys = bookKeySet.toArray();
                     //add book titles separated by :
                     for(int i = 0;i < libKeys.length;i++){
                         if(i < libKeys.length - 1){
-                            userLine += (String)libKeys[i] + ":";
+                            customerLine += (String)libKeys[i] + ":";
                         }else{
-                            userLine += (String)libKeys[i] + "\n";
+                            customerLine += (String)libKeys[i] + "\n";
                         }
                     }
                     //add formatted line to file
-                    myWriter.write(userLine);
+                    myWriter.write(customerLine);
                 }
                 myWriter.close();
             }
