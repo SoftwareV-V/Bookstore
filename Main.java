@@ -125,7 +125,7 @@ public class Main {
                 return;
             }else{
                 db.getStore().put(title, new Book(title, author, price));
-            System.out.println("Book succesfully added");
+                System.out.println("Book succesfully added");
             }
         } 
     }
@@ -138,15 +138,17 @@ public class Main {
         if(!db.getStore().containsKey(title)){
             System.out.println("Error: Book not found in store");
             return;
-        }
-        //remove book
-        db.getStore().remove(title);
+        }else{
+            //remove book
+            db.getStore().remove(title);
 
-        //remove book title from every users library
-        db.getCustomers().forEach((key,customer)->{
-            customer.getLibrary().remove(title);
-        });
-        System.out.println("Book succesfully removed");
+            //remove book title from every users library
+            db.getCustomers().forEach((key,customer)->{
+                customer.getLibrary().remove(title);
+            });
+            System.out.println("Book succesfully removed");
+        }
+        
     }
     //prints the owner menu
     public static void printOwenrMenu(){
