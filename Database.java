@@ -82,40 +82,6 @@ public class Database {
         }
         return customers;
     }
-    //populates the customers
-    //overleaded to handle different files for tesitng
-    private static HashMap<String, Customer> populateCustomers(HashMap<String,Book> store, String fileName){
-        HashMap<String,Customer> customers = new HashMap<>();
-        File customersFile = new File(fileName);
-        Scanner fileReader = null;
-        try {
-            fileReader = new Scanner(customersFile);
-        } catch (FileNotFoundException e) {
-            //if no file foun keep running, just that there will be no customers
-            //will have to create new customers
-            return new HashMap<>();
-        }
-        while(fileReader.hasNextLine()){
-            String currentLine = fileReader.nextLine();
-            String[] splitCurrentLine = currentLine.split(",");
-            HashMap<String,Book> library = new HashMap<>();
-            //if value is less then 4 then customer does not own any books
-            if(splitCurrentLine.length < 4){
-                customers.put(splitCurrentLine[0], new Customer(splitCurrentLine[0],splitCurrentLine[1],Double.parseDouble(splitCurrentLine[2]),library));
-
-            }else{
-                String[] bookTitles = splitCurrentLine[3].split(":");
-                //build customers current library
-                
-                for(String title:bookTitles){
-                    library.put(title,store.get(title));
-
-                }
-            }
-            
-        }
-        return customers;
-    }
 
     public Customer getCustomerRef(String key){
         return this.customers.get(key);

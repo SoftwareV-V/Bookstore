@@ -213,7 +213,7 @@ public class Main {
         System.out.println("Enter Username: ");
         String username = userInput.nextLine();
         //it does not allow duplicate users
-        while(db.getCustomers().containsKey(username) || username.equals("0")){
+        while(isDuplicate(username, db)){
             System.out.println("Username already in use choose another");
             username = userInput.nextLine();
         }
@@ -222,6 +222,19 @@ public class Main {
         System.out.println("Enter Credit Score: ");
         int creditScore = userInput.nextInt();
         db.getCustomers().put(username,new Customer(username, password, generateBalance(creditScore), new HashMap<>()));
+    }
+    //check if a username is duplicate or not
+    public static boolean isDuplicate(String username, Database db){
+        //if the username is found in database or it is 0
+        //let user know it is already taken
+        if(db.getCustomers().containsKey(username) || username.equals("0")){
+            System.out.println("Username already in use choose another");
+            return false;
+        }else{
+            //return true since the username is valid
+            System.out.println("Username will be added, and won't be reused");
+            return true;
+        }
     }
     public static double generateBalance(int creditScore){
         double balance = 0;
