@@ -243,7 +243,7 @@ public class Main {
     public static double generateBalance(int creditScore){
         double balance = 0;
         Random r = new Random();
-        if(creditScore >= 650){
+        if(creditScore >= 650 && creditScore <= 850){
             double low = 7500;
             double high = 10000;
             balance = r.nextDouble(high-low) + low;
@@ -255,7 +255,7 @@ public class Main {
             double low = 2500;
             double high = 5000;
             balance = r.nextDouble(high-low) + low;
-        }else{
+        }else if(creditScore > 0){
             double low = 25;
             double high = 2500;
             balance = r.nextDouble(high-low) + low;
