@@ -38,7 +38,7 @@ public class Book{
         return this.ratings;
     }
     public String toString(){
-        return "Titiel: " + this.title + "\nAuthor: " + this.author + "\nPrice: $"  + String.format("%.2f", this.price);
+        return "Title: " + this.title + "\nAuthor: " + this.author + "\nPrice: $"  + String.format("%.2f", this.price);
     }
     //gets review based on the username, if not found null is retured
     public String getReview(String username){

@@ -157,7 +157,17 @@ public class Main {
     //prints out cusomter information
     //might add formatting later on
     public static void printCustomerInfo(Customer currentUser){
-        System.out.println(currentUser);
+        //if user has books print them
+        if(currentUser.getLibrary().size() > 0){
+            System.out.println(currentUser);
+            System.out.println("Books Owned:");
+            currentUser.getLibrary().forEach((key,book)->{
+                System.out.println(book);
+            });;
+        }else{
+            //print just the user information if they do not have any books
+            System.out.println(currentUser);
+        }
     }
     //adds review to shared book ref
     public static void addReview(Book book, String username, String review){
