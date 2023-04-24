@@ -176,7 +176,7 @@ public class Main {
     //adds review to shared book ref
     public static void addReview(Book book, String username, String review){
         //empty reviews will not be added
-        if(review.length() == 0){
+        if(review.length() == 0 || book == null){
             System.out.println("No review added!");
         }else{
             //add the review, key will alwasy be username
