@@ -1,17 +1,32 @@
 import java.util.HashMap;
 
-public class User {
+public class Customer {
     String username;
     String password;
     double balance;
     HashMap<String, Book> myLibrary;
-    
-    public User(String username, String password, double balance,HashMap<String,Book> library){
+
+    public Customer(String username, String password, double balance,HashMap<String,Book> library){
         this.myLibrary = library;
         this.username = username;
         this.password = password;
         this.balance = balance;
         
+    }
+    public void displayBooks(){
+        //value is the book, key is just the title
+        this.myLibrary.forEach((key, value) -> {
+            System.out.println(value);
+            //print book review if it has one
+            if(value.getReviews().containsKey(this.username)){
+                System.out.println("Review: " + value.getReview(this.username));
+            }
+            //print book rating if it has one
+            if(value.getRatings().containsKey(this.username)){
+                System.out.println("Rating: " + value.getRatings().get(this.username));
+            }
+            System.out.println();
+          });
     }
     public void setUsername(String username){
         this.username = username;
