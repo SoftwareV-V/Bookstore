@@ -229,7 +229,7 @@ public class Main {
     }
     //prints main menu
     public static void printMainMenu(){
-        System.out.println("Hi, Welcom to <nameOfSystem>, what would you liek to do(1-3)");
+        System.out.println("Hi, Welcome to <nameOfSystem>, what would you like to do(1-3)");
         System.out.println("1.Log In");
         System.out.println("2.Register");
         System.out.println("3.Exit");
