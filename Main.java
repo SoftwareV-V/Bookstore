@@ -118,14 +118,16 @@ public class Main {
             System.out.println("Error: it seems the title, author, or price of the book is not valid");
             System.out.println("The book will not be added to the store");
             return;
-        }
-        //if book already in store, then do not add and return 
-        if(db.getStore().containsKey(title)){
-            System.out.println("Error: Book title already in store");
-            return;
-        }
-        db.getStore().put(title, new Book(title, author, price));
-        System.out.println("Book succesfully added");
+        }else{
+            //if book already in store, then do not add and return 
+            if(db.getStore().containsKey(title)){
+                System.out.println("Error: Book title already in store");
+                return;
+            }else{
+                db.getStore().put(title, new Book(title, author, price));
+            System.out.println("Book succesfully added");
+            }
+        } 
     }
     //handles the proceedure of removing a book from the store
     public static void removeBookFromStore(Scanner userInput,Database db){
