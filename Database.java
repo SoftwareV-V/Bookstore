@@ -80,6 +80,7 @@ public class Database {
             }
             
         }
+        fileReader.close();
         return customers;
     }
 
@@ -116,19 +117,23 @@ public class Database {
                     //get customer
                     Customer customer = this.customers.get((String)key);
                     //seperate customer info by comma
-                    customerLine += customer.getUsername() + "," + customer.getPassword() + "," + customer.getBalance() + ",";
+                    customerLine += customer.getUsername() + "," + customer.getPassword() + "," + customer.getBalance();
                     HashMap<String,Book> customerLib = customer.getLibrary();
                     //titles are the keys in library and store
                     Set<String> bookKeySet = customerLib.keySet();
                     Object[] libKeys = bookKeySet.toArray();
+                    if(libKeys.length > 0){
+                        customerLine += ",";
+                    }
                     //add book titles separated by :
                     for(int i = 0;i < libKeys.length;i++){
                         if(i < libKeys.length - 1){
                             customerLine += (String)libKeys[i] + ":";
                         }else{
-                            customerLine += (String)libKeys[i] + "\n";
+                            customerLine += (String)libKeys[i];
                         }
                     }
+                    customerLine += "\n";
                     //add formatted line to file
                     myWriter.write(customerLine);
                 }
@@ -141,19 +146,23 @@ public class Database {
                     //get customer
                     Customer customer = this.customers.get((String)key);
                     //seperate customer info by comma
-                    customerLine += customer.getUsername() + "," + customer.getPassword() + "," + customer.getBalance() + ",";
+                    customerLine += customer.getUsername() + "," + customer.getPassword() + "," + customer.getBalance();
                     HashMap<String,Book> customerLib = customer.getLibrary();
                     //titles are the keys in library and store
                     Set<String> bookKeySet = customerLib.keySet();
                     Object[] libKeys = bookKeySet.toArray();
+                    if(libKeys.length > 0){
+                        customerLine += ",";
+                    }
                     //add book titles separated by :
                     for(int i = 0;i < libKeys.length;i++){
                         if(i < libKeys.length - 1){
                             customerLine += (String)libKeys[i] + ":";
                         }else{
-                            customerLine += (String)libKeys[i] + "\n";
+                            customerLine += (String)libKeys[i];
                         }
                     }
+                    customerLine += "\n";
                     //add formatted line to file
                     myWriter.write(customerLine);
                 }

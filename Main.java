@@ -197,7 +197,7 @@ public class Main {
     }
     //prints main menu
     public static void printMainMenu(){
-        System.out.println("Hi, Welcom to <nameOfSystem>, what would you liek to do(1-3)");
+        System.out.println("Hi, Welcome to <nameOfSystem>, what would you like to do?(1-3)");
         System.out.println("1.Log In");
         System.out.println("2.Register");
         System.out.println("3.Exit");
@@ -233,11 +233,11 @@ public class Main {
         //let user know it is already taken
         if(db.getCustomers().containsKey(username) || username.equals("0")){
             System.out.println("Username already in use choose another");
-            return false;
+            return true;
         }else{
             //return true since the username is valid
             System.out.println("Username will be added, and won't be reused");
-            return true;
+            return false;
         }
     }
     public static double generateBalance(int creditScore){
